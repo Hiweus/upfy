@@ -35,7 +35,20 @@
             error(401, "Usuário e/ou senha incorretos");
         }
 
-        echo json_encode($response->getLines()[0]);
+        $token = rand(PHP_INT_MIN, PHP_INT_MAX) ." <===> ". rand(PHP_INT_MIN, PHP_INT_MAX);
+        $token .= " <===> ". date("Y-m-d h:i:s",time());
+        $token = hash("sha256", $token);
+
+        $sql = $queryBuilder
+                ->table("auth")
+                ->fields(["token", "fk_user"])
+                ->insert();
+        $response = $db->query($sql, "si" , [$token, $json->id] );
+
+        echo json_encode([
+            "token" => $token,
+            "userId" => $json->id
+        ]);
 
     } catch (\Throwable $th) {
         error(500, "Falha ao inserir novo usuario {$th->getLine()} {$th->getMessage()}");
