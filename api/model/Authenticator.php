@@ -46,5 +46,22 @@
             $response = $this->database->query($sql, "si", [$token, SELF::SESSION_TIMEOUT]);
             return ($response->getAffectedRows() > 0);
         }
+
+        public function getId($token)
+        {
+            $sql = $this->queryBuilder
+                    ->table("auth")
+                    ->fields(["fk_user"])
+                    ->where("token = ?")
+                    ->select();
+            $response = $this->database->query($sql, "s", [$token]);
+            if(count($response->getLines()) > 0)
+            {
+                return $response->getLines()[0]['fk_user'];
+            }
+
+            throw new Exception("Esta sessão não é valida, favor fazer login novamente");
+        }
     }
+    
 ?>

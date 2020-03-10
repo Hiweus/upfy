@@ -10,8 +10,8 @@
     {
         private $host, $usuario, $senha, $database, $conexao;
         public function __construct($host="localhost",
-                                    $usuario="hiweus",
-                                    $senha="admin",
+                                    $usuario="root",
+                                    $senha="123",
                                     $database="upfy")
         {
             $this->host = $host;
@@ -51,7 +51,27 @@
             $smtp = $this->conexao->prepare($sql);
             if($smtp !== false)
             {
+
+                $posicoes = [];
+                $binario = [];
+                for($i=0;$i<strlen($tipos);$i++)
+                {
+                    if($tipos[$i] == "b") {   
+                        array_push($posicoes, $i);
+                        array_push($binario, $parametros[$i]);
+                        $parametros[$i] = NULL;
+                    }
+                }
+                
+
                 @$smtp->bind_param($tipos, ...$parametros);
+
+                for($i=0;$i<count($posicoes);$i++)
+                {
+                    $smtp->send_long_data($posicoes[$i], $binario[$i]);
+                }
+                
+
                 $status = $smtp->execute();
                 $result = $smtp->get_result();
 

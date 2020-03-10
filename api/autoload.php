@@ -5,10 +5,11 @@
 
     function requireAuthentication()
     {
-        $input = new Input( json_decode(Input::getBody(),true) );
+        $input = new Input( getallheaders() );
         $status = false;
         if($input->get("token") != null)
         {
+            echo $input->get("token");
             $auth = new Authenticator(new QueryBuilder(), new MySQL());
             $status = ($auth->verifySession($input->get("token")));
         }
