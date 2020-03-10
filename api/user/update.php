@@ -10,6 +10,8 @@
         exit(0);   
     }
 
+    requireAuthentication();
+
     $db = new MySQL();
     $queryBuilder = new QueryBuilder();
 

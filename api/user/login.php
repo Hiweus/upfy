@@ -22,35 +22,14 @@
 
     try {
 
-        
-        $sql = $queryBuilder
-                ->table("user")
-                ->fields(["id", "name", "creation_time", "update_time"])
-                ->where("id = ? and pass = ?")
-                ->select();
-
-        $response = $db->query($sql, "is", [$json->id, hash("sha256", $json->pass)]);
-        if(count($response->getLines()) == 0)
-        {
-            error(401, "Usuário e/ou senha incorretos");
-        }
-
-        $token = rand(PHP_INT_MIN, PHP_INT_MAX) ." <===> ". rand(PHP_INT_MIN, PHP_INT_MAX);
-        $token .= " <===> ". date("Y-m-d h:i:s",time());
-        $token = hash("sha256", $token);
-
-        $sql = $queryBuilder
-                ->table("auth")
-                ->fields(["token", "fk_user"])
-                ->insert();
-        $response = $db->query($sql, "si" , [$token, $json->id] );
-
+        $auth = new Authenticator($queryBuilder, $db);
+        $token = $auth->login($json->id, $json->pass);
         echo json_encode([
             "token" => $token,
             "userId" => $json->id
         ]);
 
     } catch (\Throwable $th) {
-        error(500, "Falha ao inserir novo usuario {$th->getLine()} {$th->getMessage()}");
+        error(500, $th->getMessage());
     }
 ?>
