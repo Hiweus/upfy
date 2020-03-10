@@ -40,7 +40,7 @@
         $extension = ($extension == "")?"":".".$extension;
 
         $newName = $token.$extension;
-
+        // $newName = $name;
         if(move_uploaded_file($name, "../uploads/".$newName))
         {
             try {
@@ -49,7 +49,7 @@
                     ->fields(["token", "name", "content"])
                     ->insert();
                 $fileContent = file_get_contents("../uploads/".$newName);
-                $response = $database->query($sql, "ssb", [$token, $newName, $fileContent]);
+                $response = $database->query($sql, "ssb", [$token, $oldName, $fileContent]);
 
 
                 $idUser = $post->get("user");

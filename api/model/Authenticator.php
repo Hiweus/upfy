@@ -42,9 +42,20 @@
 
         public function verifySession($token)
         {
-            $sql = "update `auth` set `last_visit` = NOW() where token = ? and timestampdiff(MINUTE, last_visit, creation_time) < ?";
-            $response = $this->database->query($sql, "si", [$token, SELF::SESSION_TIMEOUT]);
-            return ($response->getAffectedRows() > 0);
+            $sql = "select timestampdiff(MINUTE, last_visit, creation_time) as diferenca from auth where token = ?";
+            
+            $response = $this->database->query($sql, "s", [$token]);
+            if(count($response->getLines()) > 0){
+                $time = $response->getLines()[0]['diferenca'];
+                if($time < SELF::SESSION_TIMEOUT)
+                {
+                    $sql = "update auth set last_visit = NOW() where token = ?";
+                    $this->database->query($sql, "s", [$token]);
+                    
+                    return true;
+                }
+            }
+            return false;
         }
 
         public function getId($token)
