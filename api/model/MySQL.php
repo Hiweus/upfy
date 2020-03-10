@@ -10,8 +10,8 @@
     {
         private $host, $usuario, $senha, $database, $conexao;
         public function __construct($host="localhost",
-                                    $usuario="root",
-                                    $senha="123",
+                                    $usuario="hiweus",
+                                    $senha="admin",
                                     $database="upfy")
         {
             $this->host = $host;
