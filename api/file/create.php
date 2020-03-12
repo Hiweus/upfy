@@ -63,7 +63,7 @@
                 $response = $database->query($sql, "si", [$token, $idUser]);
 
             } catch (\Throwable $th) {
-                error(500, "Arquivo já foi salvo");
+                error(500, "Arquivo já foi salvo ou o usuário esta incorreto favor verificar");
             }
             
             
