@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import User from "../../services/user";
 import Token from "../../services/token";
 import { Redirect } from 'react-router-dom';
+import Header from '../../components/Header';
 
 export default function Main() {
   const token = new Token();
@@ -50,6 +51,7 @@ export default function Main() {
 
   return (
     <div className="container-fluid">
+      <Header />
       {redirect && renderRedirect()}
       {renderRedirect()}
       <form>

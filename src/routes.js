@@ -7,6 +7,7 @@ import { Redirect } from 'react-router-dom';
 ////////////// PAGES
 import Main from "./pages/Main";
 import File from './pages/File';
+import Upload from './pages/Upload';
 //////////////////////////
 
 
@@ -24,6 +25,7 @@ export default function Routes() {
     <BrowserRouter>
         <Switch>
             <Route path="/" exact component={Main}/>
+            <Route path="/upload" exact component={Upload}/>
             <PrivateRoute path="/file" exact component={File}/>
         </Switch>
     </BrowserRouter>

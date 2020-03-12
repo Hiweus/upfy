@@ -1,11 +1,10 @@
 import React,{useState, useEffect} from 'react';
 import FileUser from '../../services/file';
 import Token from '../../services/token';
-import { Redirect } from 'react-router-dom';
+import Header from '../../components/Header';
 
 export default function File() {
     const [files, setFiles] = useState([]);
-    const [redirect, setRedirect] = useState(false);
 
     const token = new Token();
     
@@ -15,7 +14,6 @@ export default function File() {
             try {
                 const fileUser = new FileUser(new Token());
                 const filesApi = await fileUser.getFiles();
-                console.log(filesApi);
                 setFiles(filesApi); 
             } catch (error) {
                 
@@ -24,24 +22,31 @@ export default function File() {
         temp();
     },[]);
     
-    function handlerLogout()
-    {
-        token.remove();
-        setRedirect(true);
-    }
 
+    async function handlerDownload(tokenFile, nameFile)
+    {
+        console.clear();
+        console.log(tokenFile);
+        const file = new FileUser(token);
+        const binary = await file.getFile(tokenFile);
+        const url = URL.createObjectURL(binary);
+        
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = nameFile;
+        link.click();
+    }
 
     return (
         <div className="container-fluid text-center">
-            {redirect && <Redirect to="/" />}
-            <input type="button" className="btn btn-warning w-25 p-1 m-1" value="Sair" onClick={handlerLogout} />
-            
+            <Header />            
             <div className="row">
                 {files.map((f)=>(
                     <div className="card col-12 mt-2 text-center" key={f.token}>
                         <div className="card-body">
                             <h5 className="card-title">{f.name}</h5>
-                            <input type="button" className="btn btn-primary w-50" value="Abrir" />
+                            <p>Criado em : [{f.creation_time}]</p>
+                            <input type="button" className="btn btn-primary w-50" value="Abrir" onClick={()=>handlerDownload(f.token, f.name)} />
                         </div>
                     </div>
                 ))}
