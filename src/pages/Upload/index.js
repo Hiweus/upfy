@@ -31,9 +31,16 @@ export default function File() {
     {
         const file = new FileUser(token);
         try {
+            if(form.file == null)
+            {
+                alert("selecione os arquivos");
+                return ;
+            }
+
             await file.sendFile(form.file.files[0], form.user);
             alert("Arquivo enviado com sucesso");            
         } catch (error) {
+            console.log(error);
             const msg = error.error.response.data.error;
             alert(msg);
         }

@@ -15,18 +15,24 @@ export default function Header() {
     }
 
     return (
-        <ul class="nav shadow-lg p-3 mb-5 bg-white rounded">
-            <li class="nav-item">
+        <ul className="nav shadow-lg p-3 mb-5 bg-white rounded">
+            <li className="nav-item">
                 {renderLoginOrLogout()}
             </li>
 
-            <li class="nav-item">
+            <li className="nav-item">
                 <Link className="nav-link active" to="/upload">Upload</Link>
             </li>
 
             { token.isAuthenticated() &&
-            <li class="nav-item">
+            <li className="nav-item">
                 <Link className="nav-link active" to="/file">Files</Link>
+            </li>
+            }
+
+            {!token.isAuthenticated() &&
+            <li className="nav-item">
+                <Link className="nav-link active" to="/register">Register</Link>
             </li>
             }
 

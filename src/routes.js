@@ -8,6 +8,8 @@ import { Redirect } from 'react-router-dom';
 import Main from "./pages/Main";
 import File from './pages/File';
 import Upload from './pages/Upload';
+import Register from './pages/Register';
+
 //////////////////////////
 
 
@@ -26,6 +28,7 @@ export default function Routes() {
         <Switch>
             <Route path="/" exact component={Main}/>
             <Route path="/upload" exact component={Upload}/>
+            <Route path="/register" exact component={Register}/>
             <PrivateRoute path="/file" exact component={File}/>
         </Switch>
     </BrowserRouter>

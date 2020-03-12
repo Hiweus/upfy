@@ -26,4 +26,16 @@ export default class User
     }
 
 
+    async create(user)
+    {
+        try {
+            const response = await api.post("/user/create.php",JSON.stringify(user));
+            const data = response.data;
+            return data;
+        } catch (error) {
+            throw (error);
+        }
+       
+    }
+
 }
