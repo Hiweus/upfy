@@ -51,7 +51,11 @@
                 $fileContent = file_get_contents("../uploads/".$newName);
                 $response = $database->query($sql, "ssb", [$token, $oldName, $fileContent]);
 
+            } catch (\Throwable $th) {
+                //error(500, "Arquivo já foi salvo ou o usuário esta incorreto favor verificar");
+            }
 
+            try {
                 $idUser = $post->get("user");
 
                 $sql = $queryBuilder
@@ -63,7 +67,7 @@
                 $response = $database->query($sql, "si", [$token, $idUser]);
 
             } catch (\Throwable $th) {
-                error(500, "Arquivo já foi salvo ou o usuário esta incorreto favor verificar");
+                error(500, "Arquivo já foi salvo anteriormente");
             }
             
             

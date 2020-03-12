@@ -26,7 +26,7 @@ export default function Header() {
 
             { token.isAuthenticated() &&
             <li class="nav-item">
-                <Link className="nav-link active" to="/file">Files</Link>;
+                <Link className="nav-link active" to="/file">Files</Link>
             </li>
             }
 

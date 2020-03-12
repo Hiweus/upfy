@@ -30,6 +30,16 @@
         exit(0);
     }
 
+    $sql = "select fk_user from owner_file where fk_token = ? and fk_user = ?";
+    if(count($database->query($sql, "si", [$tokenRequired, $idUser])) == 0)
+    {
+        echo json_encode([
+            "error" => "Você não possui permissão para visualizar esse arquivo"
+        ]);
+        http_response_code(401);
+        exit(0);
+    }
+
     $sql = "select content, name from file where token = ?";
     $response = $database->query($sql, "s", [$tokenRequired]);
     
@@ -56,7 +66,7 @@
     else
     {
         echo json_encode([
-            "error" => "Esse arquivo não foi encontrado ou você não possui permissão"
+            "error" => "Esse arquivo não foi encontrado"
         ]);
         http_response_code(401);
     }
